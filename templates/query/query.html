@@ -1,0 +1,46 @@
+{% extends '_base.html' %}
+
+{% block title %} Query data {% endblock title %}
+
+{% block content %}
+<div class="container">
+    <h1 class="display-4">Query Nixnox data here</h1>
+
+    {% for observation in observation_list %}
+
+        <div class="list-group-item">
+        <p>{{ observation.place }} in {{ observation.region }} by {{ observation.author.username }} - {{ observation.date }}</p>
+        <a href="/media/observation_files/{{ observation.id }}.png"  target="_blank" rel="noopener noreferrer">
+        <input class="btn btn-success" type="submit" value="Download map">
+        </a>
+        <a href="/media/observation_files/{{ observation.id }}.ecsv" target="_blank" rel="noopener noreferrer">
+            <input class="btn btn-success" type="submit" value="Download SNfile">
+        </a>
+        <a href="/media/analysis/mm_{{ observation.id }}_azi.png" target="_blank" rel="noopener noreferrer">
+            <input class="btn btn-success" type="submit" value="Download profile">
+        </a>
+        </div>
+
+    {% endfor %}
+
+    <div class="pagination">
+        <span class="step-links">
+            {% if page_obj.has_previous %}
+                <a href="?page=1">&laquo; first</a>
+                <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+            {% endif %}
+
+            <span class="current">
+                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+            </span>
+
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}">next</a>
+                <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+            {% endif %}
+        </span>
+    </div>
+</div>
+
+{% endblock content %}
+

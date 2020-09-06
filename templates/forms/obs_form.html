@@ -1,0 +1,68 @@
+{% extends '_base.html' %}
+{% load leaflet_tags %}
+
+{% load crispy_forms_tags %}
+
+
+{% block title %} Submmit your data {% endblock title %}
+
+{% block content %}
+{% if map_path %}
+    <div class="container">
+    <h2>This is your map!</h2>
+    <p>Thanks {{ user }} for submmiting your data!</p>
+    <div class="row justify-content-center">
+        <img class="align-self-center mr-0" src="{{ map_path }}" alt="mapa generado">
+    </div>
+    <div class="row justify-content-center">
+
+        <a href="{{ map_path }}" style="padding:5px;" target="_blank" rel="noopener noreferrer">
+        <input class="btn btn-success" type="submit" value="Download map">
+        </a>
+        <a href="{{ ecsv_path }}" download={{ ecsv_filename }} style="padding:5px;" target="_blank" rel="noopener noreferrer">
+            <input class="btn btn-success" type="submit" value="Download .ecsv">
+        </a>
+    </div>
+    </div>
+    <div class="container">
+    <p class="text-md-left">
+        Observation in: {{ area }}, {{ province }}, {{ ccaa }}
+    </p>
+    </div>
+    <div id="main" class="container">
+        {% leaflet_map "main" callback="map_init" %}
+        <script type="text/javascript">
+                function map_init(map, options) {
+                    // get point lat and lon
+                    var lat = "{{ lat }}";
+                    var lon = "{{ long }}";
+
+                    // zoom to point & add it to map
+                    map.setView([lat, lon], 12);
+                    L.marker([lat, lon]).addTo(map);
+                }
+                </script>
+    </div>
+
+
+
+{% elif not_valid %}
+    <h2>Wrong file</h2>
+
+    <p>Sorry: your file is not OK    </p>
+
+{% else %}
+    <h2>Submmit your data</h2>
+    <div class="row">
+        <form enctype="multipart/form-data" method="post" name="Nixnox">
+        {% csrf_token %}
+        {{ form|crispy }}
+        <div class="align-self-xl-center">
+            <button class="btn btn-success" type="submit">Send data</button>
+        </div>
+        </form>
+    </div>
+
+{% endif %}
+{% endblock content %}
+

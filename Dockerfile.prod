@@ -1,0 +1,45 @@
+# Pull base image
+FROM python:3.8
+
+# Create a new user not to run as root
+# create the app user
+RUN addgroup --system docker && adduser -system docker --ingroup docker
+
+
+# Set environment variables
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
+# Set work directory
+WORKDIR /nixnox_project
+# Install dependencies
+COPY Pipfile Pipfile.lock /nixnox_project/
+RUN apt-get -y update 
+RUN apt-get install -y libzbar-dev
+RUN pip install pipenv && pipenv install --system
+
+# PostGIS (GEO Django)
+RUN wget -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add -
+RUN sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt/ buster-pgdg main" >> /etc/apt/sources.list.d/postgresql.list'
+RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 7FCC7D46ACCC4CF8
+RUN apt-get update
+RUN apt-get install -y binutils libproj-dev gdal-bin \
+    && apt-get install -y libxml2-dev libxslt-dev lib32z1-dev python-lxml \
+    && apt-get install -y libjson-c-dev \
+    && apt-get install -y libpcre3 libpcre3-dev \
+    && apt-get install proj-bin \
+    && apt-get install -y postgis postgis-doc postgis postgresql-12-postgis-2.5 postgresql-12-postgis-2.5-scripts
+
+RUN apt-get install -y redis-server
+# Dependencias para los grafos
+# RUN apt-get -y install python3-dev graphviz libgraphviz-dev pkg-config
+# RUN pipenv install pygraphviz
+
+
+# Copy project
+COPY . /nixnox_project/
+
+# Move fontiles
+RUN mkdir /usr/share/fonts/truetype/roboto/
+RUN cp ./static/fonts/* /usr/share/fonts/truetype/roboto/
+USER docker
+

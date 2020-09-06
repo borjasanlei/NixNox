@@ -1,0 +1,20 @@
+<!-- templates/home.html -->
+{% extends '_base.html' %}
+
+{% block title %}Thanks{% endblock title %}
+
+{% block content %}
+
+<h1>Thanks</h1>
+
+{% if user.is_authenticated %}
+
+ Thanks {{ user.email }} for submmiting your data!
+
+{% else %}
+
+ <p> You are not logged in </p>
+ 
+{% endif %}
+
+{% endblock content %}

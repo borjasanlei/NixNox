@@ -1,0 +1,84 @@
+{% extends '_base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %} Query data {% endblock title %}
+
+{% block content %}
+
+{% if instance %}
+    {% if query  %}
+        <div class="container">
+        <h1 class="display-3">Voilà!</h1>
+        <p class="text-md-left">Here you have all the measurements inside the circle you queried.</p>
+        <h2 class="display-4">Get all the measuraments in one file</h2>
+        <div class="row align-items-baseline" style="padding:10px">
+                <div class="col">
+                    <p class="text-md-left">Download a .csv file with all the queried measurements: </p>
+                </div>
+                <div class="col text-right">
+                    <a href="{{ query_path }}"  target="_blank" rel="noopener noreferrer">
+                <input class="btn btn-success" type="submit" value="Download csv file">
+                </a>
+                </div>
+        </div>
+        <div class="row" style="padding-top: 20px;padding-bottom: 20px">
+            <h2 class="display-4 text-left">Or download the map, SNfile and light profile individually</h2>
+        </div>
+
+        {% for observation in query %}
+
+            <div class="list-group-item">
+                <p>{{ observation.place }} in {{ observation.region }} by {{ observation.author.username }} - {{ observation.date }}</p>
+                <a href="/media/observation_files/{{ observation.id }}.png"  target="_blank" rel="noopener noreferrer">
+                <input class="btn btn-success" type="submit" value="Download map">
+                </a>
+                <a href="/media/observation_files/{{ observation.id }}.ecsv" target="_blank" rel="noopener noreferrer">
+                    <input class="btn btn-success" type="submit" value="Download SNfile">
+                </a>
+                <a href="/media/analysis/mm_{{ observation.id }}_azi.png" target="_blank" rel="noopener noreferrer">
+                    <input class="btn btn-success" type="submit" value="Download profile">
+                </a>
+            </div>
+
+        {% endfor %}
+
+    </div>
+
+    {% else %}
+        <div class="container">
+            <h1 class="display-3">Sorry</h1>
+            <p class="text-md-left">We haven't found any observation for your request. Please,try again with another query:</p>
+            <a href="{% url 'query-map-page' %}">
+                    <input class="btn btn-success" type="submit" value="Try again">
+            </a>
+        </div>
+    {% endif %}
+
+{% else %}
+    <div class="container">
+        <div class="column text-left">
+            <div class="row">
+
+                <h1 class="display-3">Select one point on the map</h1>
+                <p class="text-md-left">Click on the map to select a point. Then, type the radius of the circle you want to make the query in.
+                    We will retrive all the measurements inside that circle for you.</p>
+            </div>
+
+            <div class="row">
+                    <form enctype="multipart/form-data" method="post" name="Nixnox">
+                {% csrf_token %}
+                {{ form|crispy }}
+                <div class="align-self-xl-center">
+                    <button class="btn btn-success" type="submit">Send data</button>
+                </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+
+{% endif %}
+
+{% endblock content %}
+

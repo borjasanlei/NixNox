@@ -1,0 +1,68 @@
+<!-- templates/home.html -->
+{% extends '_base.html' %}
+
+{% block title %}Home{% endblock title %}
+
+{% block content %}
+<div class="container">
+    <h1 class="display-3">Homepage</h1>
+    Hi {{ user.email }} welcome to Nixnox data portal.
+</div>
+<div class="container">
+    {% if user.is_authenticated %}
+
+    <h2 class="display-4">Collaborate with Nixnox: submmit your data.</h2>
+
+    <div class="row align-items-baseline" style="padding:10px">
+        <div class="col">
+            <p class="text-dark">Submmit an observation gathered with the TAS photometer:</p>
+        </div>
+        <div class="col text-right">
+            <a class="btn btn-outline-primary" href="{% url 'TAS_form' %}">TAS Form</a>
+        </div>
+          </div>
+
+    {% else %}
+     <p> You are not logged in. Please, log in to submmit yuor data. Otherwise, we cannot acreditate your work.</p>
+    {% endif %}
+
+    {% if user.is_staff %}
+        <div class="row align-items-baseline" style="padding:10px">
+
+                <div class="col">
+                    <p>Submmit an observation from a Nixnox .py file:</p>
+                </div>
+                <div class="col text-right">
+                    <a class="btn btn-outline-primary" href="{% url 'Nixnox_py_form' %}">Nixnox py Form</a>
+            </div>
+
+        </div>
+
+    {% endif %}
+
+</div>
+<div class="container">
+        <h2 class="display-4">Query Nixnox maps and data.</h2>
+        <div class="row align-items-baseline" style="padding:10px">
+
+                <div class="col">
+                    <p>Query any data from NixnoxDB:</p>
+                </div>
+                <div class="col text-right">
+                    <a class="btn btn-outline-primary" href="{% url 'query-page' %}">Query data</a>
+                </div>
+
+        </div>
+        <div class="row align-items-baseline" style="padding:10px">
+
+                <div class="col">
+                    <p>Query any data from NixnoxDB using the map:</p>
+                </div>
+                <div class="col text-right">
+                    <a class="btn btn-outline-primary" href="{% url 'query-map-page' %}">Query Map</a>
+                </div>
+
+        </div>
+</div>
+
+{% endblock content %}
