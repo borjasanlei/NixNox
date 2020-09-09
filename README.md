@@ -12,7 +12,7 @@ This work has been done as the **Master's thesis** named *Ciencia abierta contra
 
 
 
-![](README.assets/title.png)
+![](doc/readme/title.png)
 
 
 
