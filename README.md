@@ -42,9 +42,9 @@ A copy of the thesis can be found [here](doc/thesis/TFM_BorjaSanchezLeirado.pdf)
 
 ### Web page
 
-The web application for submitting data, described in the thesis, can be visited following [this link](http://halmax.fis.ucm.es). 
+A first display of the web application for submitting data, described in the thesis, can be visited following [this link](http://halmax.fis.ucm.es). Please, 
 
-
+Please note that some features may not perform at their best, especially those related to CSS. I recommend for this link to use the "computer view" mode for mobile devices.
 
 ### Example files to send data
 
@@ -65,8 +65,8 @@ Then, select the provided `.txt` file
 You can query some data by using the `quey data` page, where a list of all measurements is provided, or by using the `query map` page (recommended). The later returns a `csv` file with the data of all the entries queried.
 
 
+### 3rd party python software
 
-
-
+A complete list of the pip packages employed in this project can be found on the Pipfile ([here](./Pipfile))
 
 
